@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FileUpload } from "@/components/file-upload";
 import { FileList } from "@/components/file-list";
 import { DeleteDialog } from "@/components/delete-dialog";
+import { Chat } from "@/components/chat";
 import {
   fetchFiles as fetchFilesAction,
   uploadFile as uploadFileAction,
@@ -58,24 +59,29 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="mx-auto max-w-2xl space-y-8">
-        <FileUpload onUpload={handleUpload} isLoading={isLoading} />
+    <div className="min-h-screen bg-background p-8 flex items-center justify-center">
+      <div className="grid grid-cols-[500px_1fr] gap-8 w-full max-w-6xl -mt-32">
+        <div className="space-y-6">
+          <FileUpload onUpload={handleUpload} isLoading={isLoading} />
+          <FileList
+            files={files}
+            onDelete={setDeleteTarget}
+            onFetch={handleFetch}
+            isLoading={isLoading}
+          />
+        </div>
 
-        <FileList
-          files={files}
-          onDelete={setDeleteTarget}
-          onFetch={handleFetch}
-          isLoading={isLoading}
-        />
-
-        <DeleteDialog
-          file={deleteTarget}
-          onClose={() => setDeleteTarget(null)}
-          onConfirm={handleDelete}
-          isLoading={isLoading}
-        />
+        <div>
+          <Chat />
+        </div>
       </div>
+
+      <DeleteDialog
+        file={deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleDelete}
+        isLoading={isLoading}
+      />
     </div>
   );
 }

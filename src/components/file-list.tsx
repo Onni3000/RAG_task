@@ -10,10 +10,6 @@ interface FileListProps {
   isLoading: boolean;
 }
 
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString();
-}
-
 export function FileList({
   files,
   onDelete,
@@ -31,17 +27,23 @@ export function FileList({
           {files.map((file) => (
             <div
               key={file.id}
-              className="flex items-center justify-between p-4"
+              className="flex items-center justify-between gap-4 p-4"
             >
-              <div>
-                <p className="font-medium">{file.metadata.filename}</p>
-                <p className="text-sm text-muted-foreground">
-                  {formatDate(file.metadata.created_at)}
+              <div className="min-w-0 flex-1">
+                <p
+                  className="font-medium truncate"
+                  title={file.metadata.filename}
+                >
+                  {file.metadata.filename}
+                </p>
+                <p className="text-sm text-muted-foreground truncate">
+                  {file.id}
                 </p>
               </div>
               <Button
                 variant="destructive"
                 size="sm"
+                className="shrink-0"
                 onClick={() => onDelete(file)}
               >
                 Delete

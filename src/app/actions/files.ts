@@ -44,8 +44,6 @@ export async function uploadFile(formData: FormData): Promise<FileItem> {
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    console.error("Upload failed:", response.status, errorText);
     throw new Error("Failed to upload file");
   }
 
