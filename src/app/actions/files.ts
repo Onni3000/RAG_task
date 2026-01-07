@@ -35,7 +35,6 @@ export async function fetchFiles(config?: ApiConfig): Promise<FileItem[]> {
   const response = await fetch(`${baseUrl}/files`, {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
   });
