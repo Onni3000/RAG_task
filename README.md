@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RAG Demo Application
 
-## Getting Started
+A simple frontend application for interacting with a RAG API. Upload files, manage them, and ask questions based on the uploaded content.
 
-First, run the development server:
+## Features
+
+- **File Upload** — Upload `.txt` and `.pdf` files to the RAG system
+- **File Management** — View the list of uploaded files and delete uploaded files
+- **Chat Interface** — Ask questions and get answers based on your uploaded files
+- **Flexible Configuration** — Use environment variables or manually enter API credentials
+
+## Prerequisites
+
+- Node.js
+- npm
+- Access to a RAG API endpoint
+
+## Setup
+
+### 1. Clone and Install
+
+```bash
+cd demo
+npm install
+```
+
+### 2. Configure Environment Variables (Optional)
+
+Create a `.env.local` file in the `demo` directory:
+
+```env
+BASE_URL=https://
+API_KEY=your-api-key-here
+```
+
+> **Note:** You can also enter these values directly in the UI, which will override the environment variables.
+
+### 3. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Setting API Credentials
 
-## Learn More
+You have two options:
 
-To learn more about Next.js, take a look at the following resources:
+1. **Environment Variables** — Set `BASE_URL` and `API_KEY` in `.env.local`
+2. **Manual Input** — Enter values in the input fields at the top of the page
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Manual input takes priority over environment variables.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Uploading Files
 
-## Deploy on Vercel
+1. Click **Browse** to select a file (`.txt` or `.pdf`)
+2. Click **Upload** to send the file to the RAG system
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Managing Files
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Click **Fetch Files** to load the list of uploaded files
+2. Click **Delete** on any file to remove it
+
+### Asking Questions
+
+1. Type your question in the chat input
+2. Click **Send** or press Enter
+3. The system will respond based on your uploaded files
+
+## Project Structure
+
+```
+demo/
+├── src/
+│   ├── app/
+│   │   ├── actions/
+│   │   │   ├── chat.ts        # Chat server action
+│   │   │   └── files.ts       # File management server actions
+│   │   ├── layout.tsx         # Root layout
+│   │   ├── page.tsx           # Main page component
+│   │   └── globals.css        # Global styles
+│   ├── components/
+│   │   ├── ui/                # shadcn/ui components
+│   │   ├── chat.tsx           # Chat interface
+│   │   ├── delete-dialog.tsx  # Delete confirmation dialog
+│   │   ├── file-list.tsx      # File list display
+│   │   └── file-upload.tsx    # File upload controls
+│   └── lib/
+│       └── utils.ts           # Utility functions
+├── .env.local                 # Environment variables (create this)
+├── package.json
+└── README.md
+```
