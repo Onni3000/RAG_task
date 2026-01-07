@@ -4,8 +4,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { sendChatMessage } from "@/app/actions/chat";
+import { ApiConfig } from "@/app/actions/files";
 
-export function Chat() {
+interface ChatProps {
+  apiConfig: ApiConfig;
+}
+
+export function Chat({ apiConfig }: ChatProps) {
   const [input, setInput] = useState("");
   const [response, setResponse] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +25,7 @@ export function Chat() {
     setResponse(null);
 
     try {
-      const result = await sendChatMessage(message);
+      const result = await sendChatMessage(message, apiConfig);
       setResponse(result);
     } catch (e) {
       console.error("Chat error:", e);

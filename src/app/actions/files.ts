@@ -1,7 +1,7 @@
 "use server";
 
-const BASE_URL = process.env.BASE_URL;
-const API_KEY = process.env.API_KEY;
+const DEFAULT_BASE_URL = process.env.BASE_URL;
+const DEFAULT_API_KEY = process.env.API_KEY;
 
 export interface FileMetadata {
   filename: string;
@@ -17,12 +17,26 @@ interface FetchFilesResponse {
   files: FileItem[];
 }
 
-export async function fetchFiles(): Promise<FileItem[]> {
-  const response = await fetch(`${BASE_URL}/files`, {
+export interface ApiConfig {
+  apiKey?: string;
+  baseUrl?: string;
+}
+
+function getConfig(config?: ApiConfig) {
+  return {
+    baseUrl: config?.baseUrl || DEFAULT_BASE_URL,
+    apiKey: config?.apiKey || DEFAULT_API_KEY,
+  };
+}
+
+export async function fetchFiles(config?: ApiConfig): Promise<FileItem[]> {
+  const { baseUrl, apiKey } = getConfig(config);
+
+  const response = await fetch(`${baseUrl}/files`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
     },
   });
 
@@ -34,11 +48,16 @@ export async function fetchFiles(): Promise<FileItem[]> {
   return data.files;
 }
 
-export async function uploadFile(formData: FormData): Promise<FileItem> {
-  const response = await fetch(`${BASE_URL}/files`, {
+export async function uploadFile(
+  formData: FormData,
+  config?: ApiConfig,
+): Promise<FileItem> {
+  const { baseUrl, apiKey } = getConfig(config);
+
+  const response = await fetch(`${baseUrl}/files`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
     },
     body: formData,
   });
@@ -51,11 +70,16 @@ export async function uploadFile(formData: FormData): Promise<FileItem> {
   return data;
 }
 
-export async function deleteFile(id: string): Promise<void> {
-  const response = await fetch(`${BASE_URL}/files/${id}`, {
+export async function deleteFile(
+  id: string,
+  config?: ApiConfig,
+): Promise<void> {
+  const { baseUrl, apiKey } = getConfig(config);
+
+  const response = await fetch(`${baseUrl}/files/${id}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
     },
   });
 

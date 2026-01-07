@@ -1,7 +1,7 @@
 "use server";
 
-const BASE_URL = process.env.BASE_URL;
-const API_KEY = process.env.API_KEY;
+const DEFAULT_BASE_URL = process.env.BASE_URL;
+const DEFAULT_API_KEY = process.env.API_KEY;
 
 interface ChatResponse {
   choices: {
@@ -12,12 +12,29 @@ interface ChatResponse {
   }[];
 }
 
-export async function sendChatMessage(message: string): Promise<string> {
-  const response = await fetch(`${BASE_URL}/v1/chat/completions`, {
+export interface ApiConfig {
+  apiKey?: string;
+  baseUrl?: string;
+}
+
+function getConfig(config?: ApiConfig) {
+  return {
+    baseUrl: config?.baseUrl || DEFAULT_BASE_URL,
+    apiKey: config?.apiKey || DEFAULT_API_KEY,
+  };
+}
+
+export async function sendChatMessage(
+  message: string,
+  config?: ApiConfig,
+): Promise<string> {
+  const { baseUrl, apiKey } = getConfig(config);
+
+  const response = await fetch(`${baseUrl}/v1/chat/completions`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
       model: "rag",
