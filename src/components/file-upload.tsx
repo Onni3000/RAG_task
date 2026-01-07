@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -11,6 +11,7 @@ interface FileUploadProps {
 
 export function FileUpload({ onUpload, isLoading }: FileUploadProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const input = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -20,11 +21,12 @@ export function FileUpload({ onUpload, isLoading }: FileUploadProps) {
   };
 
   const handleUpload = () => {
+    isLoading = true;
     if (!selectedFile) return;
     onUpload(selectedFile);
     setSelectedFile(null);
-    const input = document.getElementById("file-input") as HTMLInputElement;
-    if (input) input.value = "";
+    if (input.current) input.current.value = "";
+    isLoading = false;
   };
 
   return (
