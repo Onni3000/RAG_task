@@ -73,7 +73,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background p-8 flex items-center justify-center">
-      <div className="grid grid-cols-[500px_1fr] gap-8 w-full max-w-6xl -mt-32">
+      <div className="grid grid-cols-[500px_1fr] gap-8 w-full max-w-6xl mt-32">
         <div className="space-y-6">
           <div className="space-y-2">
             <Input
